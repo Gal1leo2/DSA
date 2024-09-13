@@ -109,12 +109,49 @@ public class BST {
         }
         return cur;
     }
-    /*public int findMedian(){
+    public int findMedian() {
+        int count = count(); 
+        if (count == 0) {
+            throw new IllegalArgumentException("Tree is empty");
+        }
 
+        if (count % 2 == 1) {
+            return findKHelp(root, count / 2 + 1); 
+        } else {
+            int leftMiddle = findKHelp(root, count / 2);     
+            int rightMiddle = findKHelp(root, count / 2 + 1); 
+            return (leftMiddle + rightMiddle) / 2;         
+        }
     }
-    public int findRank(int num){
 
-    }*/
+    public int findRank(int num) {
+        return findRank(root, num);
+    }
+
+    private int findRank(TreeNode node, int num) {
+        if (node == null) {
+            return 0;
+        }
+
+        if (num < node.data) {
+            return findRank(node.left, num);  
+        } else if (num == node.data) {
+            return countRecurse(node.left) + 1; 
+        } else {
+            return countRecurse(node.left) + 1 + findRank(node.right, num); 
+        }
+    }
+    private int findKHelp(TreeNode node, int k) {
+        int leftCount = countRecurse(node.left);
+
+        if (k <= leftCount) {
+            return findKHelp(node.left, k);   
+        } else if (k == leftCount + 1) {
+            return node.data;               
+        } else {
+            return findKHelp(node.right, k - leftCount - 1);  
+        }
+    }
 
     public int height(){
         return findHeight(root);
